@@ -1,0 +1,16 @@
+---
+title: "Grace Aldridge"
+image: "grace.JPG"
+links:
+  - label: LinkedIn
+    url: "https://www.linkedin.com/in/grace-aldridge-58a941219/"
+  - label: GitHub
+    url: "https://github.com/Grace-Aldridge"
+  - label: Email
+    url: "kgracealdridge@gmail.com"
+output:
+  postcards::jolla
+site: distill::distill_website
+---
+ 
+I am currently enrolled in the Master of Public Accounting graduate program at Mississippi State University. I work as a Graduate Assistant at Sponsored Programs Accounting on campus.
