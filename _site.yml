@@ -1,7 +1,7 @@
 name: "."
-title: "mfeo"
+title: "Accounting Data Analytics"
 description: |
-  mfeo
+  Data Analytics is Awesome
 output_dir: "docs"
 navbar:
   right:
