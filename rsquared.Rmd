@@ -5,11 +5,11 @@ date: "11/3/2021"
 output: distill::distill_article
 ---
 
+This content is from:[Link](https://data.library.virginia.edu/is-r-squared-useless/)
 
 [R-squared](https://en.wikipedia.org/wiki/Coefficient_of_determination) is a statistic that often accompanies regression output. It ranges in value from 0 to 1 and is usually interpreted as summarizing the percent of variation in the response that the regression model explains. So an R-squared of 0.65 might mean that the model explains about 65% of the variation in our dependent variable. Given this logic, we prefer our regression models have a high R-squared.
 
 In R, we typically get R-squared by calling the summary function on a model object. Here's a quick example using simulated data:
-
 
 ```{r,echo=TRUE}
 # independent variable
@@ -169,6 +169,3 @@ Let's recap:
 -   R-squared does not necessarily increase when assumptions are better satisfied.
 
 -   R-squared does not measure how one variable explains another.
-
-
-
