@@ -1,0 +1,110 @@
+---
+title: "resume"
+author: "Grace Aldridge"
+date: "11/3/2021"
+output: distill::distill_article
+---
+
+# Kennedy Grace Aldridge
+
+New Albany, MS
+
+Cell 662-266-1932
+
+[kgracealdridge\@gmail.com](mailto:kgracealdridge@gmail.com){.email}
+
+# PROFILE & SKILLS
+
+-Interested in furthering my knowledge of Accounting
+
+-Skilled in Microsoft Office applications including Excel, PowerPoint, and Word
+
+-Experienced in QuickBooks, Banner, and Xtender
+
+-Introductory knowledge of R Studio, Tableau, and SQL
+
+# EDUCATION
+
+## Mississippi State University, Adkerson School of Accountancy Starkville, MS
+
+Master of Professional Accountancy
+
+-Minor in Data Analytics
+
+-June 2021-May 2022
+
+Bachelor of Accountancy April 2021
+
+-Member of Transfer Student Association
+
+-GPA 3.29/4.00
+
+-Dean's List, August 2019-May 2020, January 2021-May 2021
+
+## Itawamba Community College Fulton, MS
+
+Associate of Arts May 2019
+
+-Member of Phi Theta Kappa
+
+-GPA 3.66/4.00
+
+-President's List, August 2017-May 2019
+
+# EXPERIENCE
+
+## Sponsored Programs Accounting Starkville, MS
+
+### Graduate Assistant June 2021 to May 2022
+
+-Processed Invoices and sent second notice collections
+
+-Managed Confirmation of Effort Reports
+
+-Facilitated SPA emails
+
+-Approved/Disapproved charges in NSF Queue
+
+-Supervised student workers
+
+### Student Worker December 2020 to May 2021
+
+-Requested documents for invoicing
+
+-Processed hard mail invoices and documentation
+
+-Indexed journal vouchers and other documents for the University
+
+-Keyed accounts receivables and journal vouchers
+
+## Southern Blue New Albany, MS
+
+### Store Director December 2018 to December 2020
+
+-Managed customer service, trained employees, and filled and organized orders
+
+-Resolved issues, controlled day-to-day operations, and handled all sales and up to \$4000 cash
+
+-Organized events, ran all social media platforms, and decorated store floor
+
+-Ran Brother DTG printer for t-shirts and other items
+
+## Stepping Stones Daycare Tupelo, MS
+
+### Teacher August 2018 to November 2018
+
+-Maintained personal relationships with each child and their guardian
+
+-Kept classrooms and children sanitary
+
+-Created and followed schedules for each age group and using time-management skills
+
+## Obsessions Boutique & Salon New Albany, MS
+
+### Boutique Worker June 2017 to August 2018
+
+-Organized store floor, helped customers, and checked current inventory
+
+-Answered calls for salon, created and filled orders, and ran social media platforms
+
+-Handled sales transactions and became experienced in QuickBooks
