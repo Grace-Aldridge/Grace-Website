@@ -8,3 +8,4 @@ description: |
 knitr::opts_chunk$set(echo = FALSE)
 ```
 
+This website was completed in ACC8143 Accounting Data Analytics. The purpose is to showcase some of the things learned in the class.
