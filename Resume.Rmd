@@ -1,5 +1,5 @@
 ---
-title: "resume"
+title: "Resume"
 author: "Grace Aldridge"
 date: "11/3/2021"
 output: distill::distill_article
