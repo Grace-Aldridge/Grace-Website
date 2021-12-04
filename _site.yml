@@ -1,17 +1,17 @@
 name: "."
 title: "Accounting Data Analytics"
 description: |
-  Data Analytics is Awesome
+  ACC 8143
 output_dir: "docs"
 navbar:
   right:
     - text: "Home"
       href: index.html
-    - text: "About"
-      href: about.html
-    - text: "Rsquared"
-      href: rsquared.html
     - text: "Resume"
-      href: Resume.html
+      href: Resume.html    
+    - text: "Projects"
+      href: projects.html
+       - text: "Rsquared"
+      href: rsquared.html
 output: distill::distill_article
 theme: profhunt.css
