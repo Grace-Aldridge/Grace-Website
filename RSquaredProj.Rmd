@@ -1,0 +1,79 @@
+---
+title: "RSquaredProj"
+author: "Grace Aldridge"
+date: "12/4/2021"
+output: html_document
+---
+
+[R-squared](https://en.wikipedia.org/wiki/Coefficient_of_determination) is a statistic that often accompanies regression output. It ranges in value from 0 to 1 and is usually interpreted as summarizing the percent of variation in the response that the regression model explains. So an R-squared of 0.65 might mean that the model explains about 65% of the variation in our dependent variable. Given this logic, we prefer our regression models have a high R-squared.
+
+In R, we typically get R-squared by calling the summary function on a model object. Here's a quick example using simulated data:
+
+```{r,echo=TRUE}
+# independent variable
+x <- 1:20 
+# for reproducibility
+set.seed(1) 
+# dependent variable; function of x with random error
+y <- 2 + 0.5*x + rnorm(20,0,3) 
+# simple linear regression
+mod <- lm(y~x)
+# request just the r-squared value
+summary(mod)$r.squared          
+```
+
+One way to express R-squared is as the sum of squared fitted-value deviations divided by the sum of squared original-value deviations:
+
+$$
+R^{2} =  \frac{\sum (\hat{y} – \bar{\hat{y}})^{2}}{\sum (y – \bar{y})^{2}}
+$$
+
+We can calculate it directly using our model object like so:
+
+```{r, echo=TRUE}
+# extract fitted (or predicted) values from model
+f <- mod$fitted.values
+# sum of squared fitted-value deviations
+mss <- sum((f - mean(f))^2)
+# sum of squared original-value deviations
+tss <- sum((y - mean(y))^2)
+# r-squared
+mss/tss                      
+```
+
+It is important to recognize that R-Squared is not a "good" measure of fit because of how often it is used in research. R-Squared is a very common measure used in understanding data, but it is very misleading, as seen in this example:
+
+*R-squared says nothing about prediction error, even with* $σ^2$ exactly the same, and no change in the coefficients. R-squared can be anywhere betweinen 0 and 1 just by changing the range of X. We're better off using Mean Square Error (MSE) as a measure of prediction error.
+
+MSE is basically the fitted y values minus the observed y values, squared, then summed, and then divided by the number of observations.
+
+Let's demonstrate this statement by first generating data that meets all simple linear regression assumptions and then regressing y on x to assess both R-squared and MSE.
+
+```{r,echo=TRUE}
+x <- seq(1,10,length.out = 100)
+set.seed(1)
+y <- 2 + 1.2*x + rnorm(100,0,sd = 0.9)
+mod1 <- lm(y ~ x)
+summary(mod1)$r.squared
+# Mean squared error
+sum((fitted(mod1) - y)^2)/100
+```
+
+Now repeat the above code, but this time with a different range of x. Leave everything else the same:
+
+```{r,echo=TRUE}
+ # new range of x
+x <- seq(1,2,length.out = 100)      
+set.seed(1)
+y <- 2 + 1.2*x + rnorm(100,0,sd = 0.9)
+mod1 <- lm(y ~ x)
+summary(mod1)$r.squared
+# Mean squared error
+sum((fitted(mod1) - y)^2)/100        
+```
+
+The R-squared falls from 0.94 to 0.15 but the MSE remains the same. In other words the predictive ability is the same for both data sets, but the R-squared would lead you to believe the first example somehow had a model with more predictive power.
+
+Instead of using R-Squared as a measure of fit, I would encourage you to use another method, such as MSE.
+
+This content is from: [University of Virginia Library](https://data.library.virginia.edu/is-r-squared-useless/)
