@@ -5,9 +5,9 @@ date: "12/8/2021"
 output: html_document
 ---
 
-This data set was imported from [Kaggle](https://www.kaggle.com/kewagbln/absenteeism-at-work-uci-ml-repositiory).
+This data set was imported from [Kaggle](https://www.kaggle.com/kewagbln/absenteeism-at-work-uci-ml-repositiory). I chose to observe "Absenteeism at Work" to see what correlations I could find.
 
-I decided that I wanted to see if the month of absence and the amount of targets hit are correlated to each other.
+I decided that I wanted to see how the month of absence and the amount of targets hit compared to each other. I found that there are a couple of outliers in the months we observe as Summer. In the winter, there was less absenteeism and a higher percentage of targets hit.
 
 ```{r}
 library(curl)

@@ -1,5 +1,5 @@
 ---
-title: "RSquaredProj"
+title: "R-Squared"
 author: "Grace Aldridge"
 date: "12/4/2021"
 output: html_document
