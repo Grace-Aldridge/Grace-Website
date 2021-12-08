@@ -11,8 +11,11 @@ navbar:
       href: Resume.html    
     - text: "Projects"
       menu:
-        - text: "RSquared"
+        - text: "R-Squared"
           href: RSquaredProj.html
+        - text: "Machine Learning"
+          href: ML.html
+  
   
 output: distill::distill_article
 theme: profhunt.css

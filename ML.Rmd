@@ -1,0 +1,73 @@
+---
+title: "MachineLearning"
+author: "Grace Aldridge"
+date: "12/4/2021"
+output: html_document
+---
+
+```{r, echo=FALSE}
+library(ggplot2)
+library(caret)
+library(tidyverse)
+```
+
+k-Nearest Neighbors is an algorithm used to predict what the surrounding values will be in a data set based off of a sample. For example, picture a room with six people in it. Four of those people are females and one person is male. k-Nearest Neighbors would be used to predict that the sixth person is a female based off of the female to male ratio in the room.
+
+Below, the model is being used to predict the taxonomy of an iris plant using k-nearest neighbors and classification. The chart shows the accuracy of the model, which ends up being 0.9333. There was less error when the model predicted setosa over versicolor and virginica.
+
+This algorithm can be used in the field of accounting by predicting fraudulent firms within an industry. If there are more firms committing fraudulent activity within a certain industry over another, then auditors would be inclined to shit their focus towards that industry.
+
+```{r}
+indxTrain <- createDataPartition(y = iris[, names(iris) == "Species"], p = 0.7, list = F)
+
+train <- iris[indxTrain,]
+train1<-train%>%
+  filter(Species=="setosa")%>% 
+  sample_n(10)
+train2<-train%>%
+  filter(Species=="versicolor")%>% 
+  sample_n(10)
+train3<-train%>%
+  filter(Species=="virginica")%>% 
+  sample_n(10)
+graph_train<-rbind(train1,train2,train3)
+
+test <- iris[-indxTrain,]
+graph_test<-test%>%
+  sample_n(1)
+
+knnModel <- train(Species ~., #equation or formula
+                  data = graph_train, #input data to train on
+                  method = 'knn', #algorithm
+                  preProcess = c("center","scale"), #standardizes the data
+                  tuneGrid=data.frame(k=5)) 
+
+predictedclass<-predict(knnModel,graph_test)
+
+predictedclass
+
+
+set.seed(1)
+
+indxTrain <- createDataPartition(y = iris[, names(iris) == "Species"], p = 0.7, list = F)
+
+train <- iris[indxTrain,]
+test <- iris[-indxTrain,]
+
+# Fit the model on the training set
+#set.seed(123)
+knn_model_2 <- train(
+  Species ~., 
+  data = train, 
+  method = "knn",
+  trControl = trainControl("cv", number = 10),
+  preProcess = c("center","scale"),
+  tuneLength = 10
+)
+knn_model_2
+
+```
+
+```{r}
+plot(knn_model_2)
+```
