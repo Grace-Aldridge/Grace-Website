@@ -1,0 +1,96 @@
+---
+title: "Final Project"
+author: "Grace Aldridge"
+date: "12/8/2021"
+output: html_document
+---
+
+This data set was imported from [Kaggle](https://www.kaggle.com/kewagbln/absenteeism-at-work-uci-ml-repositiory).
+
+I decided that I wanted to see if the month of absence and the amount of targets hit are correlated to each other.
+
+```{r}
+library(curl)
+
+load(curl("https://raw.githubusercontent.com/Professor-Hunt/ACC8143/main/data/tips.rda"))
+
+
+set.seed(0)
+library(rsample)
+library(tidyverse)
+
+#perform bootstrapping with 2000 replications
+Absenteeism1 <- bootstraps(as.data.frame(data.for.project$Month.of.absence), times = 100)
+
+#view results of boostrapping
+knitr::kable(head(summary(Absenteeism1),5))
+```
+
+```{r}
+#info for a specific sample
+Absenteeism1$splits[[1]]
+```
+
+```{r}
+#mean
+mean(Absenteeism1$splits[[1]]$data$`data.for.project$Month.of.absence`)
+```
+
+```{r}
+#standard deviation
+sd(Absenteeism1$splits[[1]]$data$`data.for.project$Month.of.absence`)
+```
+
+```{r}
+#get all of them 
+mean_values<-purrr::map_dbl(Absenteeism1$splits,
+        function(x) {
+          dat <- as.data.frame(x)$`data.for.project$Month.of.absence`
+          mean(dat)
+        })
+
+#view the whole dataset
+knitr::kable(mean_values)%>%
+  kableExtra::kable_styling("striped")%>%
+  kableExtra::scroll_box(width = "50%",height="300px")
+```
+
+```{r}
+#estimate of the population mean
+mean(mean_values)
+```
+
+```{r}
+#get all of them
+sd_values<-purrr::map_dbl(Absenteeism1$splits,
+        function(x) {
+          dat <- as.data.frame(x)$`data.for.project$Month.of.absence`
+          sd(dat)
+        })
+
+#view the whole dataset
+knitr::kable(sd_values)%>%
+  kableExtra::kable_styling("striped")%>%
+  kableExtra::scroll_box(width = "50%",height="300px")
+```
+
+```{r}
+#estimate of the population standard deviation
+sd(sd_values)
+```
+
+```{r}
+set.seed(1)
+#lets split the data 60/40
+library(caret)
+trainData <- createDataPartition(data.for.project$Hit.target, p = .6, list = FALSE, times = 1)
+
+#grab the data
+DataTrain <- data.for.project[ trainIndex,]
+DataTest  <- data.for.project[-trainIndex,]
+
+ggplot(data=DataTrain)+geom_point(mapping = aes(x=Month.of.absence,y=Hit.target,color=Month.of.absence),alpha=0.5) + labs(color = "Testing Targets")+ geom_point(data=DataTest, ,mapping = aes(x=Month.of.absence,y=Hit.target,)) + labs(shape = "Testing Targets") +
+  ggtitle("Absenteeism")+
+  theme(plot.title = element_text(hjust=0.5, size=10, face='bold'))
+
+```

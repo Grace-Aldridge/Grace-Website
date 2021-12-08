@@ -12,7 +12,7 @@
 <meta name="author" content="Grace Aldridge" />
 
 
-<title>MachineLearning</title>
+<title>Final Project</title>
 
 <!--radix_placeholder_navigation_in_header-->
 <meta name="distill:offset" content=""/>
@@ -963,6 +963,8 @@ d-appendix d-footnote-list a.footnote-backlink {
 <script src="C:\Users\kgrac\Documents\R\win-library\4.1\rmarkdown\rmd\h\navigation-1.1\tabsets.js"></script>
 <link href="C:\Users\kgrac\Documents\R\win-library\4.1\rmarkdown\rmd\h\highlightjs\default.css" rel="stylesheet" />
 <script src="C:\Users\kgrac\Documents\R\win-library\4.1\rmarkdown\rmd\h\highlightjs\highlight.js"></script>
+<script src="C:\Users\kgrac\Documents\R\win-library\4.1\kableExtra\kePrint-0.0.1\kePrint.js"></script>
+<link href="C:\Users\kgrac\Documents\R\win-library\4.1\kableExtra\lightable-0.0.1\lightable.css" rel="stylesheet" />
 
 <style type="text/css">
   code{white-space: pre-wrap;}
@@ -1237,90 +1239,1159 @@ Projects
 
 
 
-<h1 class="title toc-ignore">MachineLearning</h1>
+<h1 class="title toc-ignore">Final Project</h1>
 <h4 class="author">Grace Aldridge</h4>
-<h4 class="date">12/4/2021</h4>
+<h4 class="date">12/8/2021</h4>
 
 </div>
 
 
-<p>k-Nearest Neighbors is an algorithm used to predict what the surrounding values will be in a data set based off of a sample. For example, picture a room with six people in it. Four of those people are females and one person is male. k-Nearest Neighbors would be used to predict that the sixth person is a female based off of the female to male ratio in the room.</p>
-<p>Below, the model is being used to predict the taxonomy of an iris plant using k-nearest neighbors and classification. The chart shows the accuracy of the model, which ends up being 0.9333. There was less error when the model predicted setosa over versicolor and virginica.</p>
-<p>This algorithm can be used in the field of accounting by predicting fraudulent firms within an industry. If there are more firms committing fraudulent activity within a certain industry over another, then auditors would be inclined to shit their focus towards that industry.</p>
-<pre class="r"><code>indxTrain &lt;- createDataPartition(y = iris[, names(iris) == &quot;Species&quot;], p = 0.7, list = F)
+<p>This data set was imported from <a href="https://www.kaggle.com/kewagbln/absenteeism-at-work-uci-ml-repositiory">Kaggle</a>.</p>
+<p>I decided that I wanted to see if the month of absence and the amount of targets hit are correlated to each other.</p>
+<pre class="r"><code>library(curl)</code></pre>
+<pre><code>## Using libcurl 7.64.1 with Schannel</code></pre>
+<pre class="r"><code>load(curl(&quot;https://raw.githubusercontent.com/Professor-Hunt/ACC8143/main/data/tips.rda&quot;))
 
-train &lt;- iris[indxTrain,]
-train1&lt;-train%&gt;%
-  filter(Species==&quot;setosa&quot;)%&gt;% 
-  sample_n(10)
-train2&lt;-train%&gt;%
-  filter(Species==&quot;versicolor&quot;)%&gt;% 
-  sample_n(10)
-train3&lt;-train%&gt;%
-  filter(Species==&quot;virginica&quot;)%&gt;% 
-  sample_n(10)
-graph_train&lt;-rbind(train1,train2,train3)
 
-test &lt;- iris[-indxTrain,]
-graph_test&lt;-test%&gt;%
-  sample_n(1)
+set.seed(0)
+library(rsample)</code></pre>
+<pre><code>## Warning: package &#39;rsample&#39; was built under R version 4.1.2</code></pre>
+<pre class="r"><code>library(tidyverse)</code></pre>
+<pre><code>## -- Attaching packages --------------------------------------- tidyverse 1.3.1 --</code></pre>
+<pre><code>## v ggplot2 3.3.5     v purrr   0.3.4
+## v tibble  3.1.5     v dplyr   1.0.7
+## v tidyr   1.1.4     v stringr 1.4.0
+## v readr   2.1.1     v forcats 0.5.1</code></pre>
+<pre><code>## Warning: package &#39;ggplot2&#39; was built under R version 4.1.2</code></pre>
+<pre><code>## Warning: package &#39;readr&#39; was built under R version 4.1.2</code></pre>
+<pre><code>## -- Conflicts ------------------------------------------ tidyverse_conflicts() --
+## x dplyr::filter()     masks stats::filter()
+## x dplyr::lag()        masks stats::lag()
+## x readr::parse_date() masks curl::parse_date()</code></pre>
+<pre class="r"><code>#perform bootstrapping with 2000 replications
+Absenteeism1 &lt;- bootstraps(as.data.frame(data.for.project$Month.of.absence), times = 100)
 
-knnModel &lt;- train(Species ~., #equation or formula
-                  data = graph_train, #input data to train on
-                  method = &#39;knn&#39;, #algorithm
-                  preProcess = c(&quot;center&quot;,&quot;scale&quot;), #standardizes the data
-                  tuneGrid=data.frame(k=5)) 
+#view results of boostrapping
+knitr::kable(head(summary(Absenteeism1),5))</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left"></th>
+<th align="left">splits.Length splits.Class splits.Mode</th>
+<th align="left">id</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left"></td>
+<td align="left">4 boot_split list</td>
+<td align="left">Length:100</td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+<td align="left">4 boot_split list</td>
+<td align="left">Class :character</td>
+</tr>
+<tr class="odd">
+<td align="left"></td>
+<td align="left">4 boot_split list</td>
+<td align="left">Mode :character</td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+<td align="left">4 boot_split list</td>
+<td align="left">NA</td>
+</tr>
+<tr class="odd">
+<td align="left"></td>
+<td align="left">4 boot_split list</td>
+<td align="left">NA</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>#info for a specific sample
+Absenteeism1$splits[[1]]</code></pre>
+<pre><code>## &lt;Analysis/Assess/Total&gt;
+## &lt;740/278/740&gt;</code></pre>
+<pre class="r"><code>#mean
+mean(Absenteeism1$splits[[1]]$data$`data.for.project$Month.of.absence`)</code></pre>
+<pre><code>## [1] 6.324324</code></pre>
+<pre class="r"><code>#standard deviation
+sd(Absenteeism1$splits[[1]]$data$`data.for.project$Month.of.absence`)</code></pre>
+<pre><code>## [1] 3.436287</code></pre>
+<pre class="r"><code>#get all of them 
+mean_values&lt;-purrr::map_dbl(Absenteeism1$splits,
+        function(x) {
+          dat &lt;- as.data.frame(x)$`data.for.project$Month.of.absence`
+          mean(dat)
+        })
 
-predictedclass&lt;-predict(knnModel,graph_test)
+#view the whole dataset
+knitr::kable(mean_values)%&gt;%
+  kableExtra::kable_styling(&quot;striped&quot;)%&gt;%
+  kableExtra::scroll_box(width = &quot;50%&quot;,height=&quot;300px&quot;)</code></pre>
+<div style="border: 1px solid #ddd; padding: 0px; overflow-y: scroll; height:300px; overflow-x: scroll; width:50%; ">
+<table class="table table-striped" style="margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
+x
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:right;">
+6.527027
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+6.271622
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+6.404054
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+6.254054
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+6.113513
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+6.297297
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+6.285135
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+6.610811
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+6.131081
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+6.217568
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+6.463514
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+6.451351
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+6.404054
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+6.263514
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+6.174324
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+6.294595
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+6.591892
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+6.228378
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+6.310811
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+6.493243
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+6.232432
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+6.431081
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+6.364865
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+6.462162
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+6.195946
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+6.454054
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+6.237838
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+6.379730
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+6.495946
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+6.354054
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+6.217568
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+6.433784
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+6.018919
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+6.381081
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+6.314865
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+6.218919
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+6.266216
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+6.491892
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+6.221622
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+6.382432
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+6.437838
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+6.364865
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+6.275676
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+6.372973
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+6.294595
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+6.358108
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+6.495946
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+6.364865
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+6.236486
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+6.304054
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+6.318919
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+6.260811
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+6.295946
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+6.424324
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+6.589189
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+6.341892
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+6.382432
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+6.318919
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+6.370270
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+6.271622
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+6.348649
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+6.320270
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+6.359459
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+6.286486
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+6.501351
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+6.201351
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+6.200000
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+6.143243
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+6.017568
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+6.190541
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+6.393243
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+6.204054
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+6.455405
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+6.300000
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+6.095946
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+6.329730
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+6.490540
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+6.233784
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+6.331081
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+6.612162
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+6.208108
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+6.187838
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+6.433784
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+6.175676
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+6.416216
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+6.295946
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+6.368919
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+6.217568
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+6.313514
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+6.281081
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+6.202703
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+6.290540
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+6.241892
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+6.256757
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+6.243243
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+6.300000
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+6.313514
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+6.302703
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+6.513514
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+6.197297
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<pre class="r"><code>#estimate of the population mean
+mean(mean_values)</code></pre>
+<pre><code>## [1] 6.321986</code></pre>
+<pre class="r"><code>#get all of them
+sd_values&lt;-purrr::map_dbl(Absenteeism1$splits,
+        function(x) {
+          dat &lt;- as.data.frame(x)$`data.for.project$Month.of.absence`
+          sd(dat)
+        })
 
-predictedclass</code></pre>
-<pre><code>## [1] setosa
-## Levels: setosa versicolor virginica</code></pre>
+#view the whole dataset
+knitr::kable(sd_values)%&gt;%
+  kableExtra::kable_styling(&quot;striped&quot;)%&gt;%
+  kableExtra::scroll_box(width = &quot;50%&quot;,height=&quot;300px&quot;)</code></pre>
+<div style="border: 1px solid #ddd; padding: 0px; overflow-y: scroll; height:300px; overflow-x: scroll; width:50%; ">
+<table class="table table-striped" style="margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
+x
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:right;">
+3.532271
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+3.454793
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+3.477783
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+3.518410
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+3.413431
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+3.375987
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+3.380041
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+3.510648
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+3.457119
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+3.458623
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+3.351734
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+3.419131
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+3.461403
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+3.451111
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+3.381977
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+3.468743
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+3.548380
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+3.387553
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+3.399139
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+3.482601
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+3.456284
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+3.485808
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+3.420761
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+3.485120
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+3.355078
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+3.436932
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+3.383903
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+3.489845
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+3.341823
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+3.406441
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+3.405792
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+3.428322
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+3.468734
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+3.512694
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+3.442085
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+3.457168
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+3.407894
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+3.438804
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+3.514065
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+3.441522
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+3.392290
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+3.431425
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+3.439751
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+3.448256
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+3.506765
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+3.423255
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+3.495791
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+3.527101
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+3.451503
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+3.434795
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+3.497290
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+3.397974
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+3.388308
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+3.360755
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+3.349129
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+3.397942
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+3.430890
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+3.394004
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+3.405509
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+3.344538
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+3.413348
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+3.427007
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+3.503021
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+3.436110
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+3.370050
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+3.411554
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+3.523054
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+3.352299
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+3.402771
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+3.524155
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+3.555964
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+3.396685
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+3.504787
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+3.269865
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+3.514168
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+3.448352
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+3.425000
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+3.502668
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+3.469934
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+3.469506
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+3.477348
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+3.529671
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+3.381025
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+3.423069
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+3.547819
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+3.420900
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+3.436705
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+3.512971
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+3.362064
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+3.344362
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+3.438537
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+3.393166
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+3.556941
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+3.438856
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+3.494480
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+3.388151
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+3.444370
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+3.425645
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+3.350290
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+3.351165
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<pre class="r"><code>#estimate of the population standard deviation
+sd(sd_values)</code></pre>
+<pre><code>## [1] 0.05819903</code></pre>
 <pre class="r"><code>set.seed(1)
+#lets split the data 60/40
+library(caret)</code></pre>
+<pre><code>## Loading required package: lattice</code></pre>
+<pre><code>## 
+## Attaching package: &#39;caret&#39;</code></pre>
+<pre><code>## The following object is masked from &#39;package:purrr&#39;:
+## 
+##     lift</code></pre>
+<pre class="r"><code>trainData &lt;- createDataPartition(data.for.project$Hit.target, p = .6, list = FALSE, times = 1)
 
-indxTrain &lt;- createDataPartition(y = iris[, names(iris) == &quot;Species&quot;], p = 0.7, list = F)
+#grab the data
+DataTrain &lt;- data.for.project[ trainIndex,]
+DataTest  &lt;- data.for.project[-trainIndex,]
 
-train &lt;- iris[indxTrain,]
-test &lt;- iris[-indxTrain,]
-
-# Fit the model on the training set
-#set.seed(123)
-knn_model_2 &lt;- train(
-  Species ~., 
-  data = train, 
-  method = &quot;knn&quot;,
-  trControl = trainControl(&quot;cv&quot;, number = 10),
-  preProcess = c(&quot;center&quot;,&quot;scale&quot;),
-  tuneLength = 10
-)
-knn_model_2</code></pre>
-<pre><code>## k-Nearest Neighbors 
-## 
-## 105 samples
-##   4 predictor
-##   3 classes: &#39;setosa&#39;, &#39;versicolor&#39;, &#39;virginica&#39; 
-## 
-## Pre-processing: centered (4), scaled (4) 
-## Resampling: Cross-Validated (10 fold) 
-## Summary of sample sizes: 94, 95, 94, 94, 95, 95, ... 
-## Resampling results across tuning parameters:
-## 
-##   k   Accuracy   Kappa    
-##    5  0.9525758  0.9278883
-##    7  0.9525758  0.9278883
-##    9  0.9425758  0.9127368
-##   11  0.9425758  0.9127368
-##   13  0.9516667  0.9266608
-##   15  0.9525758  0.9282321
-##   17  0.9525758  0.9282321
-##   19  0.9425758  0.9130806
-##   21  0.9425758  0.9130806
-##   23  0.9125758  0.8671529
-## 
-## Accuracy was used to select the optimal model using the largest value.
-## The final value used for the model was k = 17.</code></pre>
-<pre class="r"><code>plot(knn_model_2)</code></pre>
-<p><img src="ML_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
+ggplot(data=DataTrain)+geom_point(mapping = aes(x=Month.of.absence,y=Hit.target,color=Month.of.absence),alpha=0.5) + labs(color = &quot;Testing Targets&quot;)+ geom_point(data=DataTest, ,mapping = aes(x=Month.of.absence,y=Hit.target,)) + labs(shape = &quot;Testing Targets&quot;) +
+  ggtitle(&quot;Absenteeism&quot;)+
+  theme(plot.title = element_text(hjust=0.5, size=10, face=&#39;bold&#39;))</code></pre>
+<p><img src="finalproject_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
 
 <!--radix_placeholder_site_after_body-->
 <!--/radix_placeholder_site_after_body-->

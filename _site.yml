@@ -15,7 +15,8 @@ navbar:
           href: RSquaredProj.html
         - text: "Machine Learning"
           href: ML.html
-  
+        - text: "Final Project"
+          href: finalproject.html
   
 output: distill::distill_article
 theme: profhunt.css
