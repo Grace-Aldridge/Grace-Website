@@ -5,9 +5,11 @@ date: "12/8/2021"
 output: html_document
 ---
 
-This data set was imported from [Kaggle](https://www.kaggle.com/kewagbln/absenteeism-at-work-uci-ml-repositiory). I chose to observe "Absenteeism at Work" to see what correlations I could find.
+This data set was imported from [Kaggle](https://www.kaggle.com/kewagbln/absenteeism-at-work-uci-ml-repositiory). I chose to observe "Absenteeism at Work" to see what correlations I could find. I decided that I wanted to see how the month of absence and the amount of targets hit compared to each other.
 
-I decided that I wanted to see how the month of absence and the amount of targets hit compared to each other. I found that there are a couple of outliers in the months we observe as Summer. In the winter, there was less absenteeism and a higher percentage of targets hit.
+Bootstrapping is where random samples of the data are used to construct multiple decision trees. Since each tree only sees part of the data, each tree is less accurate than if it had been constructed over the full data set. Thus, each tree is known as a *weak learner*. A more powerful, meta-estimator is subsequently constructed by averaging over these many weak learners. The approach of constructing weak learners, and combining them into a more powerful estimator, is at the heart of several, very powerful machine learning techniques, including the [random forest](https://en.wikipedia.org/wiki/Random_forest).
+
+I found that there are a couple of outliers in the months we observe as summer. In the winter, there is less absenteeism and a higher percentage of targets were hit. This data could be used to introduce an incentive to encourage workers to use less vacation time all at once. The targets that are set in place to ensure that the company is staying on track to reach investor expectations each year. By encouraging employees to spread out the use of their vacation time used, management would have a better chance at reaching those targets continuously throughout the year.
 
 ```{r}
 library(curl)

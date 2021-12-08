@@ -68,6 +68,6 @@ knn_model_2
 
 ```
 
-```{r}
+```{r, echo=FALSE}
 plot(knn_model_2)
 ```
